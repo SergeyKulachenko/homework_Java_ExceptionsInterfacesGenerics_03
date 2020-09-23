@@ -1,25 +1,25 @@
 package ru.netology.repository;
 
 
-import ru.netology.domain.Issues;
+import ru.netology.domain.Issue;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class Repository {
-    private List<Issues> items = new ArrayList<>();
+    private List<Issue> items = new ArrayList<>();
 
-    public void save(Issues item) {
+    public void save(Issue item) {
         items.add(item);
     }
 
-    public List<Issues> returnAll() {
+    public List<Issue> returnAll() {
         return items;
     }
 
-    public Issues findById(int id) {
-        for (Issues item : items) {
+    public Issue findById(int id) {
+        for (Issue item : items) {
             if (item.getId() == id) {
                 return item;
             }
@@ -31,11 +31,11 @@ public class Repository {
         items.removeIf(issues -> issues.getId() == id);
     }
 
-    public boolean addAll(Collection<Issues> items) {    //добавить всё
+    public boolean addAll(Collection<Issue> items) {    //добавить всё
         return this.items.addAll(items);
     }
 
-    public boolean add (List<Issues> issues){ //??????
+    public boolean add (List<Issue> issues){ //??????
         return items.addAll(items);
     }
 

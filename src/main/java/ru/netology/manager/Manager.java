@@ -1,98 +1,90 @@
 package ru.netology.manager;
 
-import ru.netology.domain.Issues;
+import ru.netology.domain.Issue;
 import ru.netology.repository.Repository;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class Manager {
     private Repository repository = new Repository();
 
-    public void save(Issues item) {
+    public void save(Issue item) {
         repository.save(item);
     }
 
-    public List<Issues> returnAll() {
+    public List<Issue> returnAll() {
         return repository.returnAll();
     }
 
-    public List<Issues> listOpenClosed(Boolean index) {
-        List<Issues> result = new ArrayList<>();
-        for (Issues issues : repository.returnAll())
-            if (index == issues.getOpenClosed()) {
-                result.add(issues);
+    public List<Issue> listOpenClosed(Boolean index) {
+        List<Issue> result = new ArrayList<>();
+        for (Issue issue : repository.returnAll())
+            if (index == issue.getOpenClosed()) {
+                result.add(issue);
             }
         return result;
     }
 
-    public List<Issues> filterByAuthor(String antor) {
-        List<Issues> resuit = new ArrayList<>();
-        for (Issues issues : returnAll()) {
-            if (antor.equals(issues.getAuthor())) {
-                resuit.add(issues);
+    public List<Issue> filterByAuthor(String antor) {
+        List<Issue> resuit = new ArrayList<>();
+        for (Issue issue : returnAll()) {
+            if (antor.equals(issue.getAuthor())) {
+                resuit.add(issue);
             }
         }
         return resuit;
     }
 
-//    Predicate<Issues> issuesPredicate=new Predicate<Issues>() {
-//    @Override
-//    public boolean test(Issues issues) {
-//        return false;
-//    }
 
-    public List<Issues> filterByLabel(String label) {      //    По Label'у
-        List<Issues> result = new ArrayList<>();
-        for (Issues issues : returnAll()) {
-            Set<String> labels = issues.getLables();
+    public List<Issue> filterByLabel(String label) {      //    По Label'у
+        List<Issue> result = new ArrayList<>();
+        for (Issue issue : returnAll()) {
+            Set<String> labels = issue.getLable();
             if (labels.contains(label)) {
-                result.add(issues);
+                result.add(issue);
             }
-//            if (issuesPredicate.test(issues)) {            //х.з. как передать 2 значения
         }
         return result;
     }
 
-    public List<Issues> filterByAssignee(String assignee) {      //    По Assignee (на кого назначено)
-        List<Issues> result = new ArrayList<>();
-        for (Issues issues : returnAll()) {
-            Set<String> set = issues.getAssignees();
-            if (set.contains(assignee)) result.add(issues);
+    public List<Issue> filterByAssignee(String assignee) {      //    По Assignee (на кого назначено)
+        List<Issue> result = new ArrayList<>();
+        for (Issue issue : returnAll()) {
+            Set<String> set = issue.getAssignee();
+            if (set.contains(assignee)) result.add(issue);
         }
         return result;
     }
 
-    Comparator<Issues> comparatorId = new Comparator<Issues>() {
+    Comparator<Issue> comparatorId = new Comparator<Issue>() {
         @Override
-        public int compare(Issues o1, Issues o2) {
+        public int compare(Issue o1, Issue o2) {
             return o1.getId() - o2.getId();
         }
     };
 
-    public List<Issues> sortById() {
-        List<Issues> issuesList = new ArrayList<>(repository.returnAll());
-        Collections.sort(issuesList, comparatorId);
-        return issuesList;
+    public List<Issue> sortById() {
+        List<Issue> issueList = new ArrayList<>(repository.returnAll());
+        Collections.sort(issueList, comparatorId);
+        return issueList;
     }
 
-    Comparator<Issues> comparatorAutor = new Comparator<Issues>() {
+    Comparator<Issue> comparatorAutor = new Comparator<Issue>() {
         @Override
-        public int compare(Issues o1, Issues o2) {
+        public int compare(Issue o1, Issue o2) {
             return o1.getAuthor().compareTo(o2.getAuthor());
         }
     };
 
-    public List<Issues> sortByAutor() {
-        List<Issues> issuesList = new ArrayList<>(repository.returnAll());
-        Collections.sort(issuesList, comparatorAutor);
-        return issuesList;
+    public List<Issue> sortByAutor() {
+        List<Issue> issueList = new ArrayList<>(repository.returnAll());
+        Collections.sort(issueList, comparatorAutor);
+        return issueList;
     }
 
-    public Issues openClosedById(int id) {              //Закрытие/открытие Issue по id
-        Issues result = repository.findById(id);
+    public Issue openClosedById(int id) {              //Закрытие/открытие Issue по id
+        Issue result = repository.findById(id);
         boolean openClosed = result.getOpenClosed();
         result.setOpenClosed(!openClosed);
         return result;

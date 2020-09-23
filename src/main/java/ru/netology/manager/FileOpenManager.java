@@ -4,24 +4,24 @@ import java.util.*;
 
 public class FileOpenManager {
 
-    Map map = new HashMap();
+    Map<String, String> map = new HashMap();
 
     public void save(String key, String element) {
         map.put(key, element);
     }
 
 
-    public Map registerNewApp(String key, String element) {
+    public Map<String, String> registerNewApp(String key, String element) {
         map.put(key, element);
         return map;
     }
 
     public String getApplicationToOpenFile(String key) {
-        String element = (String) map.get(key);
+        String element = map.get(key);
         return element;
     }
 
-    public Map removeTheBindingApplications(String key) {
+    public Map<String, String> removeTheBindingApplications(String key) {
         map.remove(key);
         return map;
     }
@@ -35,6 +35,5 @@ public class FileOpenManager {
         ArrayList<String> value = new ArrayList<>(map.values());
         return value;
     }
-
 
 }

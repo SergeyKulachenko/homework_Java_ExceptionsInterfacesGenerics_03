@@ -2,7 +2,6 @@ package ru.netology.manager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.netology.domain.Issues;
 
 import java.util.*;
 
@@ -24,12 +23,9 @@ class FileOpenManagerTest {
         mapT.put("doc", "Word");
         mapT.put("str", "Str");
         Map expected = mapT;
-        System.out.println(expected);
         Map actual = fileOpenManager.registerNewApp("ipg", "AddSee");
-        System.out.println(actual);
         assertEquals(expected, actual);
     }
-//    String lidiaName = passportsAndNames.get(212133);
 
     @Test
     public void getApplicationToOpenFile() {    //Получать название приложения, предназначенного для открытия файла с определённым расширением
@@ -57,7 +53,7 @@ class FileOpenManagerTest {
 
     @Test
     public void getListAllApp() {     //    Получать список всех приложений
-        List<String>expected=List.of("Str","Word");
+        List<String> expected = List.of("Str", "Word");
         ArrayList actual = fileOpenManager.getListAllApp();
         assertEquals(expected, actual);
     }
