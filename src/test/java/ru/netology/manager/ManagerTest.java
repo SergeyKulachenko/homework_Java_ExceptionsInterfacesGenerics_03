@@ -6,6 +6,7 @@ import ru.netology.domain.Issue;
 import ru.netology.repository.Repository;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,7 +37,7 @@ class ManagerTest {
         manager.save(issue4);
         manager.save(issue1);
         manager.save(issue3);
-}
+    }
 
     @Test
     public void saveIssuesNew() {                                     //Добавление Issue
@@ -58,37 +59,56 @@ class ManagerTest {
     }
 
     @Test
-    public void listOpen() {                                         //Отображение списка открытых Issue
+    public void listOpen() {                                     //Отображение списка открытых Issue
         Collection<Issue> expected = List.of(issue4, issue1);
         Collection<Issue> actual = manager.listOpenClosed(true);
         assertEquals(expected, actual);
     }
 
     @Test
-    public void listClosed() {                                          //Отображение списка закрытых Issue
+    public void listClosed() {                                   //Отображение списка закрытых Issue
         List<Issue> expected = List.of(issue2, issue3);
         List<Issue> actual = manager.listOpenClosed(false);
         assertEquals(expected, actual);
     }
 
     @Test
-    public void filterByAuthor() {                                      //По имени автора (кто создал)
+    public void filterByAuthor() {                               //По имени автора (кто создал) без Predicate
         List<Issue> expected = List.of(issue2, issue3);
         List<Issue> actual = manager.filterByAuthor("Ivanov");
         assertEquals(expected, actual);
     }
 
     @Test
-    public void filterByLabel() {                                  //    По Label'у
-        List<Issue> expected = List.of(issue1, issue3);
-        Collection<Issue> actual = manager.filterByLabel("label1");
+    public void filterByAuthorWithPredicate() {                   //По имени автора (кто создал) через Predicate
+        Predicate<String> equalsByAuthor = t -> t.equals("Ivanov");
+        List<Issue> expected = List.of(issue2, issue3);
+        List<Issue> actual = manager.filterByAuthorWithPredicate(equalsByAuthor);
         assertEquals(expected, actual);
     }
 
     @Test
-    public void filterByAssignee() {                             //    По Assignee (на кого назначено)
+    public void filterByLabelWithPredicate() {                                 //    По Label'у
+        List<Issue> expected = List.of(issue1, issue3);
+        String label = "label1";
+        Predicate<String> equalsByLabel = a -> a.equals(label);
+        List<Issue> actual = manager.filterByLabelWithPredicate(equalsByLabel);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void filterByAssigneeWithPredicate() {                             //    По Assignee (на кого назначено)
         List<Issue> expected = List.of(issue3);
-        List<Issue> actual = manager.filterByAssignee("assignee5");
+        Predicate<String> equalsDyAssignee = t -> t.equals("assignee5");
+        List<Issue> actual = manager.filterByAssigneeWithPredicate(equalsDyAssignee);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void filterByAssigneeFor2AssWithPredicate() {                        //    По Assignee (на кого назначено)
+        List<Issue> expected = List.of(issue4, issue1);
+        Predicate<String> equalsDyAssignee = t -> t.equals("assignee2");
+        List<Issue> actual = manager.filterByAssigneeWithPredicate(equalsDyAssignee);
         assertEquals(expected, actual);
     }
 

@@ -5,6 +5,7 @@ import ru.netology.repository.Repository;
 
 import java.util.*;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class Manager {
     private Repository repository = new Repository();
@@ -26,29 +27,52 @@ public class Manager {
         return result;
     }
 
-    public List<Issue> filterByAuthor(String antor) {
+    public List<Issue> filterByAuthor(String author) {
         List<Issue> resuit = new ArrayList<>();
         for (Issue issue : returnAll()) {
-            if (antor.equals(issue.getAuthor())) {
+            if (author.equals(issue.getAuthor())) {
                 resuit.add(issue);
             }
         }
         return resuit;
     }
 
+    public List<Issue> filterByAuthorWithPredicate(Predicate<String> byAuthor) {
+        List<Issue> resuit = new ArrayList<>();
+        for (Issue issue : returnAll()) {
+            if (byAuthor.test(issue.getAuthor())) {
+                resuit.add(issue);
+            }
+        }
+        return resuit;
+    }
 
-    public List<Issue> filterByLabel(String label) {      //    По Label'у
+    public List<Issue> filterByLabelWithPredicate(Predicate<String> predicateLabel) {      //    По Label'у
         List<Issue> result = new ArrayList<>();
         for (Issue issue : returnAll()) {
-            Set<String> labels = issue.getLable();
-            if (labels.contains(label)) {
-                result.add(issue);
+            HashSet<String> labels = issue.getLable();
+            for (String label : labels) {
+                if (predicateLabel.test(label)) {
+                    result.add(issue);
+                }
             }
         }
         return result;
     }
 
-    public List<Issue> filterByAssignee(String assignee) {      //    По Assignee (на кого назначено)
+    public List<Issue> filterByAssigneeWithPredicate(Predicate<String> prAssignee) {      //    По Assignee через Predicate
+        List<Issue> result = new ArrayList<>();
+        for (Issue issue : returnAll()) {
+            HashSet<String> assignees = issue.getAssignee();
+            for (String assignee : assignees)
+                if (prAssignee.test(assignee)) {
+                    result.add(issue);
+                }
+        }
+        return result;
+    }
+
+    public List<Issue> filterByAssignee(String assignee) {                //    По Assignee (на кого назначено)
         List<Issue> result = new ArrayList<>();
         for (Issue issue : returnAll()) {
             Set<String> set = issue.getAssignee();
